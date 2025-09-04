@@ -1,0 +1,21 @@
+[project]
+name = "forecast_reconciliation"
+version = "0.1.0"
+description = "Library for forecast reconciliation"
+authors =  [{ name = "someone", email = "someone@domain.com" }]
+
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "autogluon==1.4.0",
+    "datasetsforecast==1.0.0",
+    "jupyterlab==4.4.5",
+    "hierarchicalforecast==1.2.1",
+    "notebook==7.4.4",
+    "plotly==6.2.0",
+    "pydantic==2.7.1",
+    "pyrootutils==1.0.4",
+    "streamlit==1.48.1",
+    "tabpfn_time_series==1.0.3"
+]
