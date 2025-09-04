@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: forecast_reconciliation
+Version: 0.1.0
+Summary: Library for forecast reconciliation
+Author-email: someone <someone@domain.com>
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: autogluon==1.4.0
+Requires-Dist: datasetsforecast==1.0.0
+Requires-Dist: jupyterlab==4.4.5
+Requires-Dist: hierarchicalforecast==1.2.1
+Requires-Dist: notebook==7.4.4
+Requires-Dist: plotly==6.2.0
+Requires-Dist: pydantic==2.7.1
+Requires-Dist: pyrootutils==1.0.4
+Requires-Dist: streamlit==1.48.1
+Requires-Dist: tabpfn_time_series==1.0.3
+
+Conda environment 3.11
+```shell
+conda create -n forecast_reconciliation python=3.11
+```
+
+```shell
+pip install -e .
+```
+
+(may need to install lightgbm / pyarrow via conda install...)
