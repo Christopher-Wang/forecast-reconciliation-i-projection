@@ -35,13 +35,13 @@ def test_sum_two_dist():
         target_bucket_bounds=target_bucket_bounds
     )
 
-    #
-    # sum_dist = get_sum_of_two_dists(
-    #     logprob_1=prob_1, logprob_2=prob_2, bucket_means_1=bucket_means_1, bucket_means_2=bucket_means_2,
-    #     target_bucket_bounds=target_bucket_bounds
-    # )
+    
+    sum_dist = get_sum_of_two_dists(
+        logprob_1=prob_1, logprob_2=prob_2, bucket_means_1=bucket_means_1, bucket_means_2=bucket_means_2,
+        target_bucket_bounds=target_bucket_bounds
+    )
 
-    # assert torch.allclose(inefficient_sum_dist.log_softmax(1), sum_dist.log_softmax(1))
+    assert torch.allclose(inefficient_sum_dist.log_softmax(1), sum_dist.log_softmax(1))
 
 
 def test_forecast_reconciliation() -> None:

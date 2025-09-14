@@ -173,12 +173,9 @@ class IProjReconciler(Reconciler):
         Returns:
             Result of the I-projection
         """
-        # --- Input Processing (same as original, assumed correct) ---
         x = base_logits.to(device=device, dtype=dtype).contiguous()
         batch_size, n, k = x.shape
 
-        # ... (all the input broadcasting code from your original function goes here) ...
-        # -- v -> (batch_size, n, k)
         v = v.to(device=device, dtype=dtype)
         if v.dim() == 1:
             assert v.shape[0] == k
@@ -189,7 +186,6 @@ class IProjReconciler(Reconciler):
         else:
             raise ValueError("v must be (k,) or (1,n,k) or (B,n,k)")
 
-        # -- H -> (B,r,n)
         h_constr = h_constr.to(device=device, dtype=dtype)
         if h_constr.dim() == 2:
             r, _ = h_constr.shape
@@ -202,7 +198,6 @@ class IProjReconciler(Reconciler):
         else:
             raise ValueError("H must be (r, n) or (batch_size, r, n)")
 
-        # -- b -> (B,r)
         if b is None:
             b_b = torch.zeros(batch_size, r, dtype=dtype, device=x.device)
         else:
@@ -216,7 +211,6 @@ class IProjReconciler(Reconciler):
             else:
                 raise ValueError("b must be (r,) or (B,r)")
 
-        # -- series weights -> (B,n)
         if series_weights is None:
             w = torch.ones(batch_size, n, dtype=dtype, device=x.device)
         else:
@@ -232,7 +226,6 @@ class IProjReconciler(Reconciler):
             if torch.any(w <= 0):
                 raise ValueError("series_weights must be positive.")
 
-        # --- End of Input Processing ---
         identity_r = torch.eye(r, dtype=dtype, device=x.device).expand(batch_size, r, r)
 
         def _p_mu_var(lam_: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
@@ -255,7 +248,6 @@ class IProjReconciler(Reconciler):
             if torch.all(converged_mask):
                 break
 
-            # -- Hessian and Newton Step (same as before) --
             hessian_cols = h_constr_batch * (var / w).unsqueeze(1)
             a_mat = torch.matmul(hessian_cols, h_constr_batch.transpose(-1, -2)) + self.ridge * identity_r
             try:
@@ -264,9 +256,7 @@ class IProjReconciler(Reconciler):
             except RuntimeError:
                 delta = torch.linalg.solve(a_mat, resid)
 
-            # -- Corrected Batched Line Search --
             step = torch.ones(batch_size, dtype=dtype, device=x.device)
-            # We only perform line search for batches that haven't converged
             active_mask = ~converged_mask
 
             for _ in range(self.max_halving):
@@ -298,9 +288,6 @@ class IProjReconciler(Reconciler):
                 # Halve the step size for batches that are still active (i.e., failed to improve)
                 step[active_mask] *= 0.5
 
-            # Any batch that was active and never improved must not have its lambda updated.
-            # But we must update its state (p, mu, var) for the next Hessian calculation.
-            # This also handles the case where the initial delta step was successful for everyone.
             p, mu, var = _p_mu_var(lam)
 
         it_used = it + 1 if it < self.max_iter - 1 else self.max_iter
