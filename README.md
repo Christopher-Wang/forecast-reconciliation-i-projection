@@ -1,12 +1,10 @@
 # Approximate Discrete Probabilistic Forecast Reconciliation via Information Projections
 
-This repository contains the code for **Approximate Discrete Probabilistic Forecast Reconciliation via Information Projections**.
+This repository contains the code for **Approximate Discrete Probabilistic Forecast Reconciliation via Information Projections**. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gH7Zrqu8_dBYN5NPmnyDHr5HVvQSQKV5?usp=sharing)
 
 The project introduces a novel method for reconciling probabilistic forecasts generated from regression-via-classification models in hierarchical time series. It works by projecting incoherent marginals onto the space of approximately coherent distributions.
 
 The [TourismSmall Dataset](https://nixtlaverse.nixtla.io/datasetsforecast/hierarchical.html#tourismsmall) and accompanying cross-validation predictions are provided as an example.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gH7Zrqu8_dBYN5NPmnyDHr5HVvQSQKV5?usp=sharing)
 
 ## Setup
 Create the conda environment:
